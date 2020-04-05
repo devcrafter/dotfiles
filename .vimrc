@@ -3,6 +3,7 @@ filetype off
 
 set exrc
 set secure
+set encoding=utf-8
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/vundle
@@ -34,6 +35,11 @@ set list
 set list lcs=tab:\|\ 
 set list eol
 set backspace=start,eol,indent
+
+" Let clangd fully control code completion
+let g:ycm_clangd_uses_ycmd_caching = 0
+" " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
+let g:ycm_clangd_binary_path = exepath("clangd")
 
 set autoread
 
@@ -107,8 +113,8 @@ let g:ctrlp_extensions = ['funky','switcher']
 
 let g:clang_format#detect_style_file = 1
 
-noremap <leader>f :ClangFormat<CR>
-noremap <leader>F :Uncrustify<CR>
+" noremap <leader>f :ClangFormat<CR>
+noremap <leader>f :YcmCompleter Format<CR>
 "let g:uncrustify_cfg_file_path = "~/.uncrustify.cfg"
 
 let g:syntastic_cpp_compiler = 'clang++'
@@ -126,22 +132,22 @@ Plugin 'gmarik/vundle'
 Plugin 'fatih/vim-go'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/nerdtree'
-Plugin 'majutsushi/tagbar'
-Plugin 'scrooloose/syntastic'
+"Plugin 'majutsushi/tagbar'
+"Plugin 'scrooloose/syntastic'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 "Plugin 'edkolev/tmuxline.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'rking/ag.vim'
 Plugin 'rhysd/vim-clang-format'
-Plugin 'elzr/vim-json'
+"Plugin 'elzr/vim-json'
 Plugin 'kien/ctrlp.vim'
-Plugin 'vim-scripts/DeleteTrailingWhitespace'
-Plugin 'szw/vim-tags'
-Plugin 'octol/vim-cpp-enhanced-highlight'
+"Plugin 'vim-scripts/DeleteTrailingWhitespace'
+"Plugin 'szw/vim-tags'
+"Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'devcrafter/vim-ctrlp-switcher'
-Plugin 'vim-scripts/DoxygenToolkit.vim'
-Plugin 'vim-scripts/DrawIt'
+"Plugin 'vim-scripts/DoxygenToolkit.vim'
+"Plugin 'vim-scripts/DrawIt'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-commentary'
 " All of your Plugins must be added before the following line
