@@ -111,15 +111,7 @@ nnoremap \ :Ag<SPACE>
 let g:ctrlp_extensions = ['funky','switcher']
 :nnoremap <leader>s :CtrlPSwitchBasic<CR>
 
-let g:clang_format#detect_style_file = 1
-
-" noremap <leader>f :ClangFormat<CR>
 noremap <leader>f :YcmCompleter Format<CR>
-"let g:uncrustify_cfg_file_path = "~/.uncrustify.cfg"
-
-let g:syntastic_cpp_compiler = 'clang++'
-let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
-let g:syntastic_cpp_checkers = ['gcc']
 
 " doxygen comment
 let g:DoxygenToolkit_commentType = "C++"
@@ -130,6 +122,7 @@ let g:vim_tags_auto_generate = 1
 
 Plugin 'gmarik/vundle'
 Plugin 'fatih/vim-go'
+" Plugin 'codota/tabnine-vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/nerdtree'
 "Plugin 'majutsushi/tagbar'
@@ -139,7 +132,7 @@ Plugin 'vim-airline/vim-airline-themes'
 "Plugin 'edkolev/tmuxline.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'rking/ag.vim'
-Plugin 'rhysd/vim-clang-format'
+" Plugin 'rhysd/vim-clang-format'
 "Plugin 'elzr/vim-json'
 Plugin 'kien/ctrlp.vim'
 "Plugin 'vim-scripts/DeleteTrailingWhitespace'
