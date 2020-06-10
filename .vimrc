@@ -40,6 +40,7 @@ set backspace=start,eol,indent
 let g:ycm_clangd_uses_ycmd_caching = 0
 " " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
 let g:ycm_clangd_binary_path = exepath("clangd")
+let g:ycm_clangd_args = ['--clang-tidy=1', '-j=1', '--log=verbose']
 
 set autoread
 
@@ -70,6 +71,7 @@ nmap gd :YcmCompleter GoTo<CR>
 nmap yd :YcmCompleter GoTo<CR>
 nmap gt :YcmCompleter GetType<CR>
 nmap gp :YcmCompleter GetParent<CR>
+nmap gr :YcmCompleter GoToReferences<CR>
 
 let g:ctrlp_cmd = 'CtrlPMixed'
 let g:syntastic_go_checkers=['go','golint','govet']
@@ -121,11 +123,11 @@ noremap <leader>d :Dox<CR>
 let g:vim_tags_auto_generate = 1
 
 Plugin 'gmarik/vundle'
-Plugin 'fatih/vim-go'
+" Plugin 'fatih/vim-go'
 " Plugin 'codota/tabnine-vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/nerdtree'
-"Plugin 'majutsushi/tagbar'
+Plugin 'majutsushi/tagbar'
 "Plugin 'scrooloose/syntastic'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -134,7 +136,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'rking/ag.vim'
 " Plugin 'rhysd/vim-clang-format'
 "Plugin 'elzr/vim-json'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 "Plugin 'vim-scripts/DeleteTrailingWhitespace'
 "Plugin 'szw/vim-tags'
 "Plugin 'octol/vim-cpp-enhanced-highlight'
