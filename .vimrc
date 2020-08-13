@@ -4,12 +4,9 @@ filetype off
 set exrc
 set secure
 set encoding=utf-8
+" set clipboard=unnamedplus
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/vundle
-call vundle#begin()
-
-let mapleader=","
+let mapleader=" "
 
 set visualbell
 
@@ -23,11 +20,12 @@ set incsearch
 set mouse=a
 let g:vim_json_syntax_conceal = 0
 colors molokai
+set cmdheight=2
 
 "Coding
 set autoindent
 set smartindent
-set tabstop=2 shiftwidth=2 expandtab
+set tabstop=4 shiftwidth=4 expandtab
 "set tags=tags;/
 set completeopt=longest,menu,preview
 set hidden
@@ -36,11 +34,7 @@ set list lcs=tab:\|\
 set list eol
 set backspace=start,eol,indent
 
-" Let clangd fully control code completion
-let g:ycm_clangd_uses_ycmd_caching = 0
-" " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
-let g:ycm_clangd_binary_path = exepath("clangd")
-let g:ycm_clangd_args = ['--clang-tidy=1', '-j=1', '--log=verbose']
+
 
 set autoread
 
@@ -49,13 +43,21 @@ set autoread
 set laststatus=2
 
 "Completion
-let g:ycm_autoclose_preview_window_after_insertion = 1
+" " Let clangd fully control code completion
+" let g:ycm_clangd_uses_ycmd_caching = 0
+" " " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
+" let g:ycm_clangd_binary_path = "/home/i304367/bin/clangd"
+" let g:ycm_clangd_args = ['--clang-tidy=1', '-j=8', '--log=verbose', '--header-insertion=iwyu', '--background-index', '--cross-file-rename']
+" let g:ycm_autoclose_preview_window_after_insertion = 1
+" let g:ycm_confirm_extra_conf = 0
+" let g:ycm_extra_conf_globlist = ['/data/i304367/hana/src']
+" let g:ycm_always_populate_location_list = 1 " allow jump between errors with :lnext :ln :lprevious :lp
 
 " Disable Ex mode
 nnoremap Q <Nop>
 
 "File system browser
-nnoremap ~ :NERDTreeToggle<CR>
+nnoremap ` :NERDTreeToggle<CR>
 nmap <leader>t :TagbarToggle<CR>
 nmap <leader>r :NERDTreeFind<cr>
 
@@ -66,12 +68,29 @@ map <leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
 nnoremap <leader>m :bp<CR>
 nnoremap <leader>n :bn<CR>
 
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gf <Plug>(coc-fix-current)
+" Find symbol of current document.
+nmap <silent> go :<C-u>CocList outline<cr>
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
 " go to defenition
-nmap gd :YcmCompleter GoTo<CR>
-nmap yd :YcmCompleter GoTo<CR>
-nmap gt :YcmCompleter GetType<CR>
-nmap gp :YcmCompleter GetParent<CR>
-nmap gr :YcmCompleter GoToReferences<CR>
+" nmap gd :YcmCompleter GoTo<CR>
+" nmap gt :YcmCompleter GetType<CR>
+" nmap gp :YcmCompleter GetParent<CR>
+" nmap gr :YcmCompleter GoToReferences<CR>
+" nmap gf :YcmCompleter FixIt<CR>
 
 let g:ctrlp_cmd = 'CtrlPMixed'
 let g:syntastic_go_checkers=['go','golint','govet']
@@ -113,7 +132,11 @@ nnoremap \ :Ag<SPACE>
 let g:ctrlp_extensions = ['funky','switcher']
 :nnoremap <leader>s :CtrlPSwitchBasic<CR>
 
-noremap <leader>f :YcmCompleter Format<CR>
+let g:clang_format#style_options = {
+            \ "ColumnLimit" : 160,
+            \ "Standard" : "C++17"}
+autocmd FileType cpp noremap <leader>f :ClangFormat<CR>
+autocmd FileType python noremap <leader>f :YAPF<CR>
 
 " doxygen comment
 let g:DoxygenToolkit_commentType = "C++"
@@ -122,36 +145,41 @@ noremap <leader>d :Dox<CR>
 " ctags
 let g:vim_tags_auto_generate = 1
 
-Plugin 'gmarik/vundle'
+call plug#begin('~/.vim/plugged')
 " Plugin 'fatih/vim-go'
 " Plugin 'codota/tabnine-vim'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'scrooloose/nerdtree'
-Plugin 'majutsushi/tagbar'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'Valloric/YouCompleteMe'
+Plug 'scrooloose/nerdtree'
+Plug 'majutsushi/tagbar'
 "Plugin 'scrooloose/syntastic'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 "Plugin 'edkolev/tmuxline.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'rking/ag.vim'
-" Plugin 'rhysd/vim-clang-format'
+Plug 'tpope/vim-fugitive'
+Plug 'rking/ag.vim'
+Plug 'rhysd/vim-clang-format'
 "Plugin 'elzr/vim-json'
-Plugin 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 "Plugin 'vim-scripts/DeleteTrailingWhitespace'
 "Plugin 'szw/vim-tags'
 "Plugin 'octol/vim-cpp-enhanced-highlight'
-Plugin 'devcrafter/vim-ctrlp-switcher'
+Plug 'devcrafter/vim-ctrlp-switcher'
 "Plugin 'vim-scripts/DoxygenToolkit.vim'
 "Plugin 'vim-scripts/DrawIt'
-Plugin 'easymotion/vim-easymotion'
-Plugin 'tpope/vim-commentary'
+Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-commentary'
+" Plugin 'google/yapf', { 'rtp': 'plugins/vim' }
+Plug 'tpope/vim-surround'
+"Plugin 'davidhalter/jedi-vim'
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
+call plug#end()
 
 " comments style for cpp
 autocmd FileType cpp,cs,java setlocal commentstring=//\ %s
 autocmd FileType sql setlocal commentstring=--\ %s
 autocmd FileType cmake setlocal commentstring=#\ %s
 
+filetype plugin on
 filetype plugin indent on
 syntax on
