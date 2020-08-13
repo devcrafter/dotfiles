@@ -26,23 +26,19 @@ set cmdheight=2
 set autoindent
 set smartindent
 set tabstop=4 shiftwidth=4 expandtab
-"set tags=tags;/
 set completeopt=longest,menu,preview
 set hidden
 set list
 set list lcs=tab:\|\ 
 set list eol
 set backspace=start,eol,indent
-
-
-
 set autoread
 
 "Statusline
 "set statusline=%<%f\ %m%r%=0x%B\ \ %l,%c%V\ %P
 set laststatus=2
 
-"Completion
+" YouCompleteMe
 " " Let clangd fully control code completion
 " let g:ycm_clangd_uses_ycmd_caching = 0
 " " " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
@@ -52,6 +48,12 @@ set laststatus=2
 " let g:ycm_confirm_extra_conf = 0
 " let g:ycm_extra_conf_globlist = ['/data/i304367/hana/src']
 " let g:ycm_always_populate_location_list = 1 " allow jump between errors with :lnext :ln :lprevious :lp
+" go to defenition
+" nmap gd :YcmCompleter GoTo<CR>
+" nmap gt :YcmCompleter GetType<CR>
+" nmap gp :YcmCompleter GetParent<CR>
+" nmap gr :YcmCompleter GoToReferences<CR>
+" nmap gf :YcmCompleter FixIt<CR>
 
 " Disable Ex mode
 nnoremap Q <Nop>
@@ -68,51 +70,48 @@ map <leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
 nnoremap <leader>m :bp<CR>
 nnoremap <leader>n :bn<CR>
 
+" Coc plugin(LSP)
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" GoTo code navigation.
+" code navigation.
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gf <Plug>(coc-fix-current)
-" Find symbol of current document.
+" find symbol of current document.
 nmap <silent> go :<C-u>CocList outline<cr>
-
-" Symbol renaming.
+" symbol renaming
 nmap <leader>rn <Plug>(coc-rename)
 
-" go to defenition
-" nmap gd :YcmCompleter GoTo<CR>
-" nmap gt :YcmCompleter GetType<CR>
-" nmap gp :YcmCompleter GetParent<CR>
-" nmap gr :YcmCompleter GoToReferences<CR>
-" nmap gf :YcmCompleter FixIt<CR>
 
-let g:ctrlp_cmd = 'CtrlPMixed'
-let g:syntastic_go_checkers=['go','golint','govet']
-let g:syntastic_aggregate_errors=1
-let g:go_highlight_operators = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_structs = 1
-let g:go_fmt_command = "goimports"
-let g:go_auto_type_info = 1
+" Golang - probably should be removed
+" let g:syntastic_go_checkers=['go','golint','govet']
+" let g:syntastic_aggregate_errors=1
+" let g:go_highlight_operators = 1
+" let g:go_highlight_functions = 1
+" let g:go_highlight_methods = 1
+" let g:go_highlight_structs = 1
+" let g:go_fmt_command = "goimports"
+" let g:go_auto_type_info = 1
 
+" airline
 let g:airline_powerline_fonts = 1
 let g:airline_theme='powerlineish'
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
-"
 " " Show just the filename
 "let g:airline#extensions#tabline#fnamemod = ':t'
 
 let g:tmuxline_powerline_separators = 1
 let g:tmuxline_preset = 'full'
 
+" CtrlP - fuzzy search
+let g:ctrlp_cmd = 'CtrlPMixed'
+let g:ctrlp_extensions = ['funky','switcher']
+:nnoremap <leader>s :CtrlPSwitchBasic<CR>
 " The Silver Searcher
 if executable('ag')
   " Use ag over grep
@@ -129,14 +128,11 @@ endif
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 nnoremap \ :Ag<SPACE>
 
-let g:ctrlp_extensions = ['funky','switcher']
-:nnoremap <leader>s :CtrlPSwitchBasic<CR>
-
+" Clang format
 let g:clang_format#style_options = {
             \ "ColumnLimit" : 160,
             \ "Standard" : "C++17"}
 autocmd FileType cpp noremap <leader>f :ClangFormat<CR>
-autocmd FileType python noremap <leader>f :YAPF<CR>
 
 " doxygen comment
 let g:DoxygenToolkit_commentType = "C++"
@@ -146,36 +142,28 @@ noremap <leader>d :Dox<CR>
 let g:vim_tags_auto_generate = 1
 
 call plug#begin('~/.vim/plugged')
-" Plugin 'fatih/vim-go'
-" Plugin 'codota/tabnine-vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'Valloric/YouCompleteMe'
-Plug 'scrooloose/nerdtree'
+"Plug 'codota/tabnine-vim'
+"Plug 'edkolev/tmuxline.vim'
+"Plug 'fatih/vim-go'
+"Plug 'vim-scripts/DoxygenToolkit.vim'
+"Plug 'vim-scripts/DrawIt'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'devcrafter/vim-ctrlp-switcher'
+Plug 'easymotion/vim-easymotion'
 Plug 'majutsushi/tagbar'
-"Plugin 'scrooloose/syntastic'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'rhysd/vim-clang-format'
+Plug 'rking/ag.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-"Plugin 'edkolev/tmuxline.vim'
-Plug 'tpope/vim-fugitive'
-Plug 'rking/ag.vim'
-Plug 'rhysd/vim-clang-format'
-"Plugin 'elzr/vim-json'
-Plug 'ctrlpvim/ctrlp.vim'
-"Plugin 'vim-scripts/DeleteTrailingWhitespace'
-"Plugin 'szw/vim-tags'
-"Plugin 'octol/vim-cpp-enhanced-highlight'
-Plug 'devcrafter/vim-ctrlp-switcher'
-"Plugin 'vim-scripts/DoxygenToolkit.vim'
-"Plugin 'vim-scripts/DrawIt'
-Plug 'easymotion/vim-easymotion'
-Plug 'tpope/vim-commentary'
-" Plugin 'google/yapf', { 'rtp': 'plugins/vim' }
-Plug 'tpope/vim-surround'
-"Plugin 'davidhalter/jedi-vim'
 " All of your Plugins must be added before the following line
 call plug#end()
 
-" comments style for cpp
+" comments style
 autocmd FileType cpp,cs,java setlocal commentstring=//\ %s
 autocmd FileType sql setlocal commentstring=--\ %s
 autocmd FileType cmake setlocal commentstring=#\ %s
