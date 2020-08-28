@@ -60,7 +60,6 @@ nnoremap Q <Nop>
 
 "File system browser
 nnoremap ` :NERDTreeToggle<CR>
-nmap <leader>t :TagbarToggle<CR>
 nmap <leader>r :NERDTreeFind<cr>
 
 " close current buffer
@@ -83,9 +82,15 @@ nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gf <Plug>(coc-fix-current)
 " find symbol of current document.
 nmap <silent> go :<C-u>CocList outline<cr>
+nmap <silent> gh :CocCommand clangd.switchSourceHeader<cr>
 " symbol renaming
 nmap <leader>rn <Plug>(coc-rename)
+" Use <Tab> and <S-Tab> to navigate the completion list
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
+" tagbar
+nmap <leader>t :TagbarToggle<CR>
 
 " Golang - probably should be removed
 " let g:syntastic_go_checkers=['go','golint','govet']
