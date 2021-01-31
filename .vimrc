@@ -21,6 +21,12 @@ set mouse=a
 let g:vim_json_syntax_conceal = 0
 colors molokai
 set cmdheight=2
+" move window border with mouse
+if has("mouse_sgr")
+    set ttymouse=sgr
+else
+    set ttymouse=xterm2
+end
 
 "Coding
 set autoindent
@@ -35,25 +41,7 @@ set backspace=start,eol,indent
 set autoread
 
 "Statusline
-"set statusline=%<%f\ %m%r%=0x%B\ \ %l,%c%V\ %P
 set laststatus=2
-
-" YouCompleteMe
-" " Let clangd fully control code completion
-" let g:ycm_clangd_uses_ycmd_caching = 0
-" " " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
-" let g:ycm_clangd_binary_path = "/home/i304367/bin/clangd"
-" let g:ycm_clangd_args = ['--clang-tidy=1', '-j=8', '--log=verbose', '--header-insertion=iwyu', '--background-index', '--cross-file-rename']
-" let g:ycm_autoclose_preview_window_after_insertion = 1
-" let g:ycm_confirm_extra_conf = 0
-" let g:ycm_extra_conf_globlist = ['/data/i304367/hana/src']
-" let g:ycm_always_populate_location_list = 1 " allow jump between errors with :lnext :ln :lprevious :lp
-" go to defenition
-" nmap gd :YcmCompleter GoTo<CR>
-" nmap gt :YcmCompleter GetType<CR>
-" nmap gp :YcmCompleter GetParent<CR>
-" nmap gr :YcmCompleter GoToReferences<CR>
-" nmap gf :YcmCompleter FixIt<CR>
 
 " Disable Ex mode
 nnoremap Q <Nop>
@@ -92,23 +80,11 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " tagbar
 nmap <leader>t :TagbarToggle<CR>
 
-" Golang - probably should be removed
-" let g:syntastic_go_checkers=['go','golint','govet']
-" let g:syntastic_aggregate_errors=1
-" let g:go_highlight_operators = 1
-" let g:go_highlight_functions = 1
-" let g:go_highlight_methods = 1
-" let g:go_highlight_structs = 1
-" let g:go_fmt_command = "goimports"
-" let g:go_auto_type_info = 1
-
 " airline
 let g:airline_powerline_fonts = 1
 let g:airline_theme='powerlineish'
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
-" " Show just the filename
-"let g:airline#extensions#tabline#fnamemod = ':t'
 
 let g:tmuxline_powerline_separators = 1
 let g:tmuxline_preset = 'full'
@@ -146,6 +122,13 @@ noremap <leader>d :Dox<CR>
 " ctags
 let g:vim_tags_auto_generate = 1
 
+"fzf
+nnoremap <leader>ff :Files<CR>
+nnoremap <leader>fb :Buffers<CR>
+nnoremap <leader>fl :BLines<CR>
+nnoremap <leader>fm :Marks<CR>
+nnoremap <leader>fw :Windows<CR>
+
 call plug#begin('~/.vim/plugged')
 "Plug 'codota/tabnine-vim'
 "Plug 'edkolev/tmuxline.vim'
@@ -153,7 +136,8 @@ call plug#begin('~/.vim/plugged')
 "Plug 'vim-scripts/DoxygenToolkit.vim'
 "Plug 'vim-scripts/DrawIt'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'devcrafter/vim-ctrlp-switcher'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'majutsushi/tagbar'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -165,6 +149,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'airblade/vim-gitgutter'
 " All of your Plugins must be added before the following line
 call plug#end()
 
