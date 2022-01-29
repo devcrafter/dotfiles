@@ -19,7 +19,6 @@ set nu sm hlsearch
 set incsearch
 set mouse=a
 let g:vim_json_syntax_conceal = 0
-colors molokai
 set cmdheight=2
 " move window border with mouse
 if has("mouse_sgr")
@@ -27,6 +26,10 @@ if has("mouse_sgr")
 else
     set ttymouse=xterm2
 end
+" color
+set background=dark
+" colorscheme
+colorscheme molokai
 
 "Coding
 set autoindent
@@ -47,7 +50,7 @@ set laststatus=2
 nnoremap Q <Nop>
 
 "File system browser
-nnoremap ` :NERDTreeToggle<CR>
+nnoremap <leader>` :NERDTreeToggle<CR>
 nmap <leader>r :NERDTreeFind<cr>
 
 " close current buffer
@@ -77,6 +80,21 @@ nmap <leader>rn <Plug>(coc-rename)
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
+" Use D to show documentation in preview window.
+nnoremap <silent> D :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
 " tagbar
 nmap <leader>t :TagbarToggle<CR>
 
@@ -89,10 +107,6 @@ let g:airline#extensions#tabline#enabled = 1
 let g:tmuxline_powerline_separators = 1
 let g:tmuxline_preset = 'full'
 
-" CtrlP - fuzzy search
-let g:ctrlp_cmd = 'CtrlPMixed'
-let g:ctrlp_extensions = ['funky','switcher']
-:nnoremap <leader>s :CtrlPSwitchBasic<CR>
 " The Silver Searcher
 if executable('ag')
   " Use ag over grep
@@ -106,12 +120,13 @@ if executable('ag')
 endif
 
 " bind K to grep word under cursor
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-nnoremap \ :Ag<SPACE>
+" nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+nnoremap K :Rg <C-R><C-W><CR>
+nnoremap \ :Rg<SPACE>
 
 " Clang format
 let g:clang_format#style_options = {
-            \ "ColumnLimit" : 160,
+            \ "ColumnLimit" : 120,
             \ "Standard" : "C++17"}
 autocmd FileType cpp noremap <leader>f :ClangFormat<CR>
 
@@ -129,12 +144,18 @@ nnoremap <leader>fl :BLines<CR>
 nnoremap <leader>fm :Marks<CR>
 nnoremap <leader>fw :Windows<CR>
 
+"tabs
+nnoremap th  :tabfirst<CR>
+nnoremap tj  :tabnext<CR>
+nnoremap tk  :tabprev<CR>
+nnoremap tl  :tablast<CR>
+nnoremap tt  :tabedit<Space>
+nnoremap tn  :tabnext<Space>
+nnoremap tm  :tabm<Space>
+nnoremap td  :tabclose<CR>
+nnoremap tc  :tabnew<CR>
+
 call plug#begin('~/.vim/plugged')
-"Plug 'codota/tabnine-vim'
-"Plug 'edkolev/tmuxline.vim'
-"Plug 'fatih/vim-go'
-"Plug 'vim-scripts/DoxygenToolkit.vim'
-"Plug 'vim-scripts/DrawIt'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -150,7 +171,6 @@ Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
-" All of your Plugins must be added before the following line
 call plug#end()
 
 " comments style
