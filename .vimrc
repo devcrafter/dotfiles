@@ -107,27 +107,14 @@ let g:airline#extensions#tabline#enabled = 1
 let g:tmuxline_powerline_separators = 1
 let g:tmuxline_preset = 'full'
 
-" The Silver Searcher
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
-endif
-
 " bind K to grep word under cursor
-" nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 nnoremap K :Rg <C-R><C-W><CR>
 nnoremap \ :Rg<SPACE>
 
 " Clang format
 let g:clang_format#style_options = {
             \ "ColumnLimit" : 120,
-            \ "Standard" : "C++17"}
+            \ "Standard" : "C++20"}
 autocmd FileType cpp noremap <leader>f :ClangFormat<CR>
 
 " doxygen comment
@@ -138,6 +125,7 @@ noremap <leader>d :Dox<CR>
 let g:vim_tags_auto_generate = 1
 
 "fzf
+nnoremap <leader>fg :GFiles<CR>
 nnoremap <leader>ff :Files<CR>
 nnoremap <leader>fb :Buffers<CR>
 nnoremap <leader>fl :BLines<CR>
@@ -145,16 +133,17 @@ nnoremap <leader>fm :Marks<CR>
 nnoremap <leader>fw :Windows<CR>
 
 "tabs
-nnoremap th  :tabfirst<CR>
-nnoremap tj  :tabnext<CR>
-nnoremap tk  :tabprev<CR>
-nnoremap tl  :tablast<CR>
-nnoremap tt  :tabedit<Space>
-nnoremap tn  :tabnext<Space>
-nnoremap tm  :tabm<Space>
-nnoremap td  :tabclose<CR>
-nnoremap tc  :tabnew<CR>
+nnoremap <leader>th  :tabfirst<CR>
+nnoremap <leader>tj  :tabnext<CR>
+nnoremap <leader>tk  :tabprev<CR>
+nnoremap <leader>tl  :tablast<CR>
+nnoremap <leader>tt  :tabedit<Space>
+nnoremap <leader>tn  :tabnext<Space>
+nnoremap <leader>tm  :tabm<Space>
+nnoremap <leader>td  :tabclose<CR>
+nnoremap <leader>tc  :tabnew<CR>
 
+packadd termdebug
 call plug#begin('~/.vim/plugged')
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -171,6 +160,7 @@ Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
 
 " comments style
