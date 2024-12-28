@@ -157,6 +157,46 @@ require('lazy').setup({
         component_separators = '|',
         section_separators = '',
       },
+      sections = {
+        lualine_b = {
+          { 'branch' },
+          {
+            'diff',
+            colored = true, -- Displays a colored diff status if set to true
+            diff_color = {
+              -- Same color values as the general color option can be used here.
+              added    = 'LuaLineDiffAdd',    -- Changes the diff's added color
+              modified = 'LuaLineDiffChange', -- Changes the diff's modified color
+              removed  = 'LuaLineDiffDelete', -- Changes the diff's removed color you
+            },
+            symbols = {added = '+', modified = '~', removed = '-'}, -- Changes the symbols used by the diff.
+            -- source = nil, -- A function that works as a data source for diff.
+                          -- It must return a table as such:
+                          --   { added = add_count, modified = modified_count, removed = removed_count }
+                          -- or nil on failure. count <= 0 won't be displayed.
+          }
+        },
+        lualine_c = {
+          {
+            'filename',
+            file_status = true,      -- Displays file status (readonly status, modified status)
+            newfile_status = false,  -- Display new file status (new file means no write after created)
+            path = 1,                -- 0: Just the filename
+                                     -- 1: Relative path
+                                     -- 2: Absolute path
+                                     -- 3: Absolute path, with tilde as the home directory
+                                     -- 4: Filename and parent dir, with tilde as the home directory
+            shorting_target = 40,    -- Shortens path to leave 40 spaces in the window
+                                     -- for other components. (terrible name, any suggestions?)
+            symbols = {
+              modified = '[+]',      -- Text to show when the file is modified.
+              readonly = '[-]',      -- Text to show when the file is non-modifiable or readonly.
+              unnamed = '[No Name]', -- Text to show for unnamed buffers.
+              newfile = '[New]',     -- Text to show for newly created file before first write
+            }
+          }
+        }
+      }
     },
   },
 
@@ -185,6 +225,12 @@ require('lazy').setup({
         end,
       },
     },
+    opts = {
+      defaults = {
+        layout_strategy = 'vertical',
+        layout_config = { height = 0.95, width=0.9 },
+      },
+    }
   },
 
   {
@@ -292,7 +338,7 @@ require("nvim-tree").setup({
 })
 
 require('onedark').setup {
-    style = 'warmer',
+    style = 'darker',
 }
 require('onedark').load()
 
@@ -399,7 +445,7 @@ vim.keymap.set('n', '<leader>tf', vim.cmd.NvimTreeFindFile, { desc = 'Nvim[T]ree
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
+  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'vimdoc', 'vim' },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = false,
